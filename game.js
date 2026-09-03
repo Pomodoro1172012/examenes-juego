@@ -50,8 +50,7 @@ function comenzarExamen() {
         alert("Completá tu nombre y tu curso.");
         return;
     }
-document.getElementById("nombreMateria").textContent =
-    configuracion.materia;
+
     // Guardamos la hora exacta de inicio
     horaInicio = new Date();
 
