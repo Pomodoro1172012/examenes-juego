@@ -1,3 +1,4 @@
 const configuracion = {
-    cantidadPreguntas: 1
+    materia: "Historia",
+    cantidadPreguntas: 2
 };
