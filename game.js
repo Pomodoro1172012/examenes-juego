@@ -97,14 +97,25 @@ function mostrarPregunta() {
 
     contenedor.innerHTML = "";
 
-    pregunta.opciones.forEach((opcion, indice) => {
+    // Creamos una copia de las opciones
+    const opcionesMezcladas = pregunta.opciones.map((texto, indice) => {
+        return {
+            texto: texto,
+            indiceOriginal: indice
+        };
+    });
+
+    // Mezclamos las opciones
+    opcionesMezcladas.sort(() => Math.random() - 0.5);
+
+    opcionesMezcladas.forEach(opcion => {
 
         const boton = document.createElement("button");
 
-        boton.textContent = opcion;
+        boton.textContent = opcion.texto;
 
         boton.onclick = function () {
-            responder(indice);
+            responder(opcion.indiceOriginal);
         };
 
         contenedor.appendChild(boton);
@@ -112,7 +123,6 @@ function mostrarPregunta() {
 
     document.getElementById("resultado").textContent = "";
 }
-
 
 // ========================================
 // RESPONDER
