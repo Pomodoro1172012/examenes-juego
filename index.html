@@ -1,27 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Examen</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h1>Examen</h1>
+    <!-- PANTALLA INICIAL -->
+    <div id="pantallaInicio">
 
-    <p>Nombre del alumno:</p>
-    <input type="text" id="nombre" placeholder="Escribí tu nombre">
+        <h1>Examen</h1>
 
-    <p>Curso:</p>
-    <input type="text" id="curso" placeholder="Ej: 2°A">
+        <p>Nombre del alumno:</p>
+        <input type="text" id="nombre" placeholder="Escribí tu nombre">
 
-    <br><br>
+        <p>Curso:</p>
+        <input type="text" id="curso" placeholder="Ej: 2°A">
 
-    <button onclick="comenzarExamen()">Comenzar examen</button>
+        <br><br>
 
-<script src="game.js"></script>
+        <button onclick="comenzarExamen()">
+            Comenzar examen
+        </button>
+
+    </div>
+
+
+    <!-- PANTALLA DEL EXAMEN -->
+    <div id="pantallaExamen" style="display: none;">
+
+        <h2 id="numeroPregunta"></h2>
+
+        <h1 id="textoPregunta"></h1>
+
+        <div id="opciones"></div>
+
+        <p id="resultado"></p>
+
+    </div>
+
+
+    <script src="game.js"></script>
+
 </body>
+
 </html>
