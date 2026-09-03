@@ -18,10 +18,43 @@
 
         <p>Materia:</p>
         <input type="text" id="materia" placeholder="Ej: Historia">
+<p>Cantidad de preguntas:</p>
+<input type="number" id="cantidadPreguntas" min="1" max="50" value="10">
 
-        <p>Cantidad de preguntas:</p>
-        <input type="number" id="cantidadPreguntas" min="1" max="50" value="10">
+<h2>Preguntas</h2>
 
+<div id="preguntas">
+
+    <div class="pregunta">
+
+        <p>Pregunta 1:</p>
+        <input type="text" placeholder="Escribí la pregunta">
+
+        <p>Respuesta 1:</p>
+        <input type="text" placeholder="Respuesta">
+
+        <p>Respuesta 2:</p>
+        <input type="text" placeholder="Respuesta">
+
+        <p>Respuesta 3:</p>
+        <input type="text" placeholder="Respuesta">
+
+        <p>Respuesta 4:</p>
+        <input type="text" placeholder="Respuesta">
+
+        <p>Respuesta correcta:</p>
+        <select>
+            <option value="0">Respuesta 1</option>
+            <option value="1">Respuesta 2</option>
+            <option value="2">Respuesta 3</option>
+            <option value="3">Respuesta 4</option>
+        </select>
+
+    </div>
+
+</div>
+
+<br>
         <br><br>
 
         <button onclick="crearExamen()">
