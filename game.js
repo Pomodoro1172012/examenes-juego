@@ -36,7 +36,7 @@ let aciertos = 0;
 let horaInicio = null;
 
 let preguntasExamen = [];
-
+let cantidadPreguntas = 2;
 
 // ========================================
 // COMENZAR EXAMEN
@@ -59,12 +59,23 @@ function comenzarExamen() {
     preguntaActual = 0;
     aciertos = 0;
 
-    // Copiamos las preguntas
-    preguntasExamen = [...preguntas];
+   // Copiamos todas las preguntas
+preguntasExamen = [...preguntas];
 
-    // Mezclamos el orden
-    preguntasExamen.sort(() => Math.random() - 0.5);
+// Mezclamos las preguntas
+for (let i = preguntasExamen.length - 1; i > 0; i--) {
 
+    const j = Math.floor(Math.random() * (i + 1));
+
+    const temporal = preguntasExamen[i];
+
+    preguntasExamen[i] = preguntasExamen[j];
+
+    preguntasExamen[j] = temporal;
+}
+
+// Nos quedamos solamente con la cantidad elegida
+preguntasExamen = preguntasExamen.slice(0, cantidadPreguntas);
     console.log("Alumno:", nombre);
     console.log("Curso:", curso);
     console.log("Hora de inicio:", horaInicio);
