@@ -36,7 +36,7 @@ let aciertos = 0;
 let horaInicio = null;
 
 let preguntasExamen = [];
-let cantidadPreguntas = 2;
+let cantidadPreguntas = 1;
 
 // ========================================
 // COMENZAR EXAMEN
