@@ -213,3 +213,5 @@ function terminarExamen() {
     console.log("Aciertos:", aciertos);
     console.log("Hora de inicio:", horaInicio);
 }
+document.getElementById("nombreMateria").textContent =
+    configuracion.materia;
