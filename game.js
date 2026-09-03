@@ -31,11 +31,14 @@ const preguntas = [
 // VARIABLES DEL EXAMEN
 // ========================================
 
+
 let preguntaActual = 0;
 let aciertos = 0;
 let horaInicio = null;
 
-
+// Copia de las preguntas que vamos a utilizar.
+// Se mezclará al comenzar cada examen.
+let preguntasExamen = [];
 // ========================================
 // COMENZAR EXAMEN
 // ========================================
@@ -52,7 +55,11 @@ function comenzarExamen() {
 
     // Guardamos la hora exacta de inicio
     horaInicio = new Date();
+// Creamos una copia de las preguntas
+preguntasExamen = [...preguntas];
 
+// Mezclamos las preguntas aleatoriamente
+preguntasExamen.sort(() => Math.random() - 0.5);
     console.log("Alumno:", nombre);
     console.log("Curso:", curso);
     console.log("Hora de inicio:", horaInicio);
@@ -72,8 +79,7 @@ function comenzarExamen() {
 // ========================================
 
 function mostrarPregunta() {
-
-    const pregunta = preguntas[preguntaActual];
+const pregunta = preguntasExamen[preguntaActual];
 
     // Número de pregunta
     document.getElementById("numeroPregunta").textContent =
@@ -114,8 +120,8 @@ function mostrarPregunta() {
 
 function responder(indiceElegido) {
 
-    const pregunta = preguntas[preguntaActual];
-    const resultado = document.getElementById("resultado");
+    const resultadconst pregunta = preguntasExamen[preguntaActual];
+    o = document.getElementById("resultado");
 
     if (indiceElegido === pregunta.correcta) {
 
@@ -142,8 +148,8 @@ function responder(indiceElegido) {
 
         preguntaActual++;
 
-        if (preguntaActual < preguntas.length) {
-            mostrarPregunta();
+if (preguntaActual < preguntasExamen.length)
+        mostrarPregunta();
         } else {
             terminarExamen();
         }
@@ -158,8 +164,7 @@ function responder(indiceElegido) {
 
 function terminarExamen() {
 
-    const total = preguntas.length;
-
+const total = preguntasExamen.length;
     document.getElementById("numeroPregunta").textContent =
         "Examen terminado";
 
