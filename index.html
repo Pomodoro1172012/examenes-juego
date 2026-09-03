@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Examen</title>
+</head>
+
+<body>
+
+    <h1>Examen</h1>
+
+    <p>Nombre del alumno:</p>
+    <input type="text" id="nombre" placeholder="Escribí tu nombre">
+
+    <p>Curso:</p>
+    <input type="text" id="curso" placeholder="Ej: 2°A">
+
+    <br><br>
+
+    <button onclick="comenzarExamen()">Comenzar examen</button>
+
+    <script>
+        function comenzarExamen() {
+            const nombre = document.getElementById("nombre").value;
+            const curso = document.getElementById("curso").value;
+
+            if (nombre === "" || curso === "") {
+                alert("Completá tu nombre y tu curso.");
+                return;
+            }
+
+            alert("¡Examen comenzado!");
+        }
+    </script>
+
+</body>
+</html>
