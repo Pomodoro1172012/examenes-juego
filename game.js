@@ -55,20 +55,24 @@ function comenzarExamen() {
     // Guardamos la hora exacta de inicio
     horaInicio = new Date();
 
-    // Creamos una copia de las preguntas
+    // Reiniciamos los datos
+    preguntaActual = 0;
+    aciertos = 0;
+
+    // Copiamos las preguntas
     preguntasExamen = [...preguntas];
 
-    // Mezclamos las preguntas aleatoriamente
+    // Mezclamos el orden
     preguntasExamen.sort(() => Math.random() - 0.5);
 
     console.log("Alumno:", nombre);
     console.log("Curso:", curso);
     console.log("Hora de inicio:", horaInicio);
 
-    // Ocultamos la pantalla inicial
+    // Ocultamos inicio
     document.getElementById("pantallaInicio").style.display = "none";
 
-    // Mostramos el examen
+    // Mostramos examen
     document.getElementById("pantallaExamen").style.display = "block";
 
     mostrarPregunta();
@@ -133,14 +137,14 @@ function responder(indiceElegido) {
             pregunta.opciones[pregunta.correcta];
     }
 
-    // Desactivamos todos los botones
+    // Desactivamos los botones
     const botones = document.querySelectorAll("#opciones button");
 
     botones.forEach(boton => {
         boton.disabled = true;
     });
 
-    // Esperamos y pasamos a la siguiente pregunta
+    // Pasamos a la siguiente pregunta
     setTimeout(() => {
 
         preguntaActual++;
