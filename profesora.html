@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Configurar examen</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div id="configurador">
+
+        <h1>⚙️ Configurar examen</h1>
+
+        <p>Materia:</p>
+        <input type="text" id="materia" placeholder="Ej: Historia">
+
+        <p>Cantidad de preguntas:</p>
+        <input type="number" id="cantidadPreguntas" min="1" max="50" value="10">
+
+        <br><br>
+
+        <button onclick="crearExamen()">
+            Generar examen
+        </button>
+
+    </div>
+
+
+    <script>
+
+        function crearExamen() {
+
+            const materia =
+                document.getElementById("materia").value.trim();
+
+            const cantidad =
+                document.getElementById("cantidadPreguntas").value;
+
+            if (materia === "") {
+                alert("Escribí el nombre de la materia.");
+                return;
+            }
+
+            console.log("Materia:", materia);
+            console.log("Cantidad de preguntas:", cantidad);
+
+            alert("¡Configuración guardada!");
+
+        }
+
+    </script>
+
+</body>
+
+</html>
