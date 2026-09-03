@@ -1,3 +1,3 @@
 const configuracion = {
-    cantidadPreguntas: 2
+    cantidadPreguntas: 1
 };
