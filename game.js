@@ -31,14 +31,13 @@ const preguntas = [
 // VARIABLES DEL EXAMEN
 // ========================================
 
-
 let preguntaActual = 0;
 let aciertos = 0;
 let horaInicio = null;
 
-// Copia de las preguntas que vamos a utilizar.
-// Se mezclará al comenzar cada examen.
 let preguntasExamen = [];
+
+
 // ========================================
 // COMENZAR EXAMEN
 // ========================================
@@ -55,11 +54,13 @@ function comenzarExamen() {
 
     // Guardamos la hora exacta de inicio
     horaInicio = new Date();
-// Creamos una copia de las preguntas
-preguntasExamen = [...preguntas];
 
-// Mezclamos las preguntas aleatoriamente
-preguntasExamen.sort(() => Math.random() - 0.5);
+    // Creamos una copia de las preguntas
+    preguntasExamen = [...preguntas];
+
+    // Mezclamos las preguntas aleatoriamente
+    preguntasExamen.sort(() => Math.random() - 0.5);
+
     console.log("Alumno:", nombre);
     console.log("Curso:", curso);
     console.log("Hora de inicio:", horaInicio);
@@ -79,23 +80,19 @@ preguntasExamen.sort(() => Math.random() - 0.5);
 // ========================================
 
 function mostrarPregunta() {
-const pregunta = preguntasExamen[preguntaActual];
 
-    // Número de pregunta
+    const pregunta = preguntasExamen[preguntaActual];
+
     document.getElementById("numeroPregunta").textContent =
         "Pregunta " + (preguntaActual + 1);
 
-    // Texto de la pregunta
     document.getElementById("textoPregunta").textContent =
         pregunta.pregunta;
 
-    // Contenedor de opciones
     const contenedor = document.getElementById("opciones");
 
-    // Limpiamos las opciones anteriores
     contenedor.innerHTML = "";
 
-    // Creamos un botón para cada opción
     pregunta.opciones.forEach((opcion, indice) => {
 
         const boton = document.createElement("button");
@@ -109,7 +106,6 @@ const pregunta = preguntasExamen[preguntaActual];
         contenedor.appendChild(boton);
     });
 
-    // Limpiamos el mensaje anterior
     document.getElementById("resultado").textContent = "";
 }
 
@@ -120,8 +116,9 @@ const pregunta = preguntasExamen[preguntaActual];
 
 function responder(indiceElegido) {
 
-    const resultadconst pregunta = preguntasExamen[preguntaActual];
-    o = document.getElementById("resultado");
+    const pregunta = preguntasExamen[preguntaActual];
+
+    const resultado = document.getElementById("resultado");
 
     if (indiceElegido === pregunta.correcta) {
 
@@ -143,14 +140,17 @@ function responder(indiceElegido) {
         boton.disabled = true;
     });
 
-    // Esperamos un momento y pasamos a la siguiente
+    // Esperamos y pasamos a la siguiente pregunta
     setTimeout(() => {
 
         preguntaActual++;
 
-if (preguntaActual < preguntasExamen.length)
-        mostrarPregunta();
+        if (preguntaActual < preguntasExamen.length) {
+
+            mostrarPregunta();
+
         } else {
+
             terminarExamen();
         }
 
@@ -164,7 +164,8 @@ if (preguntaActual < preguntasExamen.length)
 
 function terminarExamen() {
 
-const total = preguntasExamen.length;
+    const total = preguntasExamen.length;
+
     document.getElementById("numeroPregunta").textContent =
         "Examen terminado";
 
