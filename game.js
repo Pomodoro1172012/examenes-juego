@@ -82,7 +82,6 @@ function comenzarExamen() {
 // ========================================
 // MOSTRAR PREGUNTA
 // ========================================
-
 function mostrarPregunta() {
 
     const pregunta = preguntasExamen[preguntaActual];
@@ -105,9 +104,19 @@ function mostrarPregunta() {
         };
     });
 
-    // Mezclamos las opciones
-    opcionesMezcladas.sort(() => Math.random() - 0.5);
+    // MEZCLAR OPCIONES
+    for (let i = opcionesMezcladas.length - 1; i > 0; i--) {
 
+        const j = Math.floor(Math.random() * (i + 1));
+
+        const temporal = opcionesMezcladas[i];
+
+        opcionesMezcladas[i] = opcionesMezcladas[j];
+
+        opcionesMezcladas[j] = temporal;
+    }
+
+    // Crear botones
     opcionesMezcladas.forEach(opcion => {
 
         const boton = document.createElement("button");
