@@ -35,9 +35,8 @@ let preguntaActual = 0;
 let aciertos = 0;
 let horaInicio = null;
 
-let preguntasExamen = [];
-let cantidadPreguntas = 1;
 
+let preguntasExamen = [];
 // ========================================
 // COMENZAR EXAMEN
 // ========================================
@@ -75,7 +74,7 @@ for (let i = preguntasExamen.length - 1; i > 0; i--) {
 }
 
 // Nos quedamos solamente con la cantidad elegida
-preguntasExamen = preguntasExamen.slice(0, cantidadPreguntas);
+preguntasExamen = preguntasExamen.slice(0, configuracion.cantidadPreguntas);
     console.log("Alumno:", nombre);
     console.log("Curso:", curso);
     console.log("Hora de inicio:", horaInicio);
