@@ -68,17 +68,30 @@
 <script>
 
     // ========================================
+    // URL DE GOOGLE APPS SCRIPT
+    // ========================================
+
+    const URL_APPS_SCRIPT =
+        "https://script.google.com/macros/s/AKfycbxRunM6BUjUQNyg1rXFrJqUtvToarADE1JDu-cmhae_ljq07cfCYOB737EmjrgWnyLT/exec";
+
+
+    // ========================================
     // CREAR PREGUNTAS
     // ========================================
 
     function generarPreguntas() {
 
-        const cantidad = Number(
-            document.getElementById("cantidadPreguntas").value
-        );
+        const cantidad =
+            Number(
+                document
+                    .getElementById("cantidadPreguntas")
+                    .value
+            );
+
 
         const contenedor =
             document.getElementById("preguntas");
+
 
         contenedor.innerHTML = "";
 
@@ -87,6 +100,7 @@
 
             const bloque =
                 document.createElement("div");
+
 
             bloque.className = "pregunta";
 
@@ -161,7 +175,9 @@
 
 
             contenedor.appendChild(bloque);
+
         }
+
     }
 
 
@@ -182,10 +198,10 @@
 
 
     // ========================================
-    // GENERAR NUEVO EXAMEN
+    // GENERAR EXAMEN
     // ========================================
 
-    function crearExamen() {
+    async function crearExamen() {
 
         const materia =
             document
@@ -209,6 +225,7 @@
             );
 
             return;
+
         }
 
 
@@ -225,6 +242,7 @@
             );
 
             return;
+
         }
 
 
@@ -286,7 +304,7 @@
 
 
         // ========================================
-        // CREAR EL EXAMEN
+        // CREAR NUEVO EXAMEN
         // ========================================
 
         const examen = {
@@ -302,61 +320,71 @@
         };
 
 
-        // ========================================
-        // OBTENER EXÁMENES ANTERIORES
-        // ========================================
-
-        let examenes = JSON.parse(
-            localStorage.getItem("examenes")
-        );
-
-
-        if (!Array.isArray(examenes)) {
-
-            examenes = [];
-
-        }
-
-
-        // ========================================
-        // AGREGAR EL NUEVO EXAMEN
-        // ========================================
-
-        examenes.push(examen);
-
-
-        // ========================================
-        // GUARDAR TODOS LOS EXÁMENES
-        // ========================================
-
-        localStorage.setItem(
-            "examenes",
-            JSON.stringify(examenes)
-        );
-
-
-        // ========================================
-        // MOSTRAR INFORMACIÓN
-        // ========================================
-
         console.log(
-            "Nuevo examen creado:",
+            "Enviando examen:",
             examen
         );
 
-        console.log(
-            "Todos los exámenes:",
-            examenes
-        );
+
+        // ========================================
+        // ENVIAR A GOOGLE APPS SCRIPT
+        // ========================================
+
+        try {
+
+            const respuesta =
+                await fetch(
+                    URL_APPS_SCRIPT,
+                    {
+                        method: "POST",
+
+                        body: JSON.stringify(examen)
+                    }
+                );
 
 
-        alert(
-            "¡Examen creado correctamente!\n\n" +
-            "Materia: " +
-            materia +
-            "\nID: " +
-            examen.id
-        );
+            const resultado =
+                await respuesta.json();
+
+
+            console.log(
+                "Respuesta de Apps Script:",
+                resultado
+            );
+
+
+            if (resultado.ok) {
+
+                alert(
+                    "¡Examen creado correctamente!\n\n" +
+                    "Materia: " +
+                    examen.materia +
+                    "\nID: " +
+                    examen.id
+                );
+
+            } else {
+
+                alert(
+                    "Hubo un problema al guardar el examen."
+                );
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Error:",
+                error
+            );
+
+
+            alert(
+                "No se pudo conectar con el servidor."
+            );
+
+        }
 
     }
 
