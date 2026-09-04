@@ -91,24 +91,57 @@ function generarPreguntas() {
 
         contenedor.appendChild(bloque);
     }
+function crearExamen() {
+
+    const materia =
+        document.getElementById("materia").value.trim();
+
+    const cantidad =
+        Number(document.getElementById("cantidadPreguntas").value);
+
+    if (materia === "") {
+        alert("Escribí el nombre de la materia.");
+        return;
+    }
+
+    const bloques =
+        document.querySelectorAll(".pregunta");
+
+    const preguntas = [];
+
+    bloques.forEach((bloque) => {
+
+        const campos =
+            bloque.querySelectorAll("input");
+
+        const pregunta =
+            campos[0].value.trim();
+
+        const opciones = [
+            campos[1].value.trim(),
+            campos[2].value.trim(),
+            campos[3].value.trim(),
+            campos[4].value.trim()
+        ];
+
+        const correcta =
+            Number(bloque.querySelector("select").value);
+
+        preguntas.push({
+            pregunta: pregunta,
+            opciones: opciones,
+            correcta: correcta
+        });
+
+    });
+
+    console.log("Materia:", materia);
+    console.log("Cantidad de preguntas:", cantidad);
+    console.log("Preguntas:", preguntas);
+
+    alert("¡Configuración guardada!");
+
 }
-        function crearExamen() {
-
-            const materia =
-                document.getElementById("materia").value.trim();
-
-            const cantidad =
-                document.getElementById("cantidadPreguntas").value;
-
-            if (materia === "") {
-                alert("Escribí el nombre de la materia.");
-                return;
-            }
-
-            console.log("Materia:", materia);
-            console.log("Cantidad de preguntas:", cantidad);
-
-            alert("¡Configuración guardada!");
 
         }
 
