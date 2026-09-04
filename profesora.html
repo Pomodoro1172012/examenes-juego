@@ -276,16 +276,37 @@
             );
 
 
-            console.log(
-                "Preguntas:",
-                preguntas
-            );
+           console.log("Preguntas:", preguntas);
 
 
-            alert(
-                "¡Configuración guardada!"
-            );
+// ========================================
+// GUARDAR CONFIGURACIÓN
+// ========================================
 
+const configuracionExamen = {
+
+    materia: materia,
+
+    cantidadPreguntas: cantidad,
+
+    preguntas: preguntas
+
+};
+
+
+localStorage.setItem(
+    "configuracionExamen",
+    JSON.stringify(configuracionExamen)
+);
+
+
+alert("¡Examen guardado correctamente!");
+
+
+console.log(
+    "Configuración completa:",
+    configuracionExamen
+);
         }
 
     </script>
