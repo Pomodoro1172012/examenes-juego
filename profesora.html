@@ -17,24 +17,44 @@
         <h1>⚙️ Configurar examen</h1>
 
         <p>Materia:</p>
-        <input type="text" id="materia" placeholder="Ej: Historia">
-<p>Cantidad de preguntas:</p>
-<input type="number" id="cantidadPreguntas" min="1" max="50" value="10">
 
-<h2>Preguntas</h2>
+        <input
+            type="text"
+            id="materia"
+            placeholder="Ej: Historia"
+        >
 
-<div id="preguntas"></div>
 
-<br>
+        <p>Cantidad de preguntas:</p>
 
-<button type="button" onclick="generarPreguntas()">
-    Crear preguntas
-</button>
+        <input
+            type="number"
+            id="cantidadPreguntas"
+            min="1"
+            max="50"
+            value="10"
+        >
 
-<br>
-        <br><br>
+        <h2>Preguntas</h2>
 
-        <button onclick="crearExamen()">
+        <div id="preguntas"></div>
+
+        <br>
+
+        <button
+            type="button"
+            onclick="generarPreguntas()"
+        >
+            Crear preguntas
+        </button>
+
+        <br>
+        <br>
+
+        <button
+            type="button"
+            onclick="crearExamen()"
+        >
             Generar examen
         </button>
 
@@ -42,106 +62,229 @@
 
 
     <script>
-function generarPreguntas() {
 
-    const cantidad = Number(
-        document.getElementById("cantidadPreguntas").value
-    );
+        // ========================================
+        // CREAR PREGUNTAS
+        // ========================================
 
-    const contenedor = document.getElementById("preguntas");
+        function generarPreguntas() {
 
-    contenedor.innerHTML = "";
+            const cantidad = Number(
+                document.getElementById("cantidadPreguntas").value
+            );
 
-    for (let i = 0; i < cantidad; i++) {
+            const contenedor =
+                document.getElementById("preguntas");
 
-        const bloque = document.createElement("div");
+            contenedor.innerHTML = "";
 
-        bloque.className = "pregunta";
 
-        bloque.innerHTML = `
-            <hr>
+            for (let i = 0; i < cantidad; i++) {
 
-            <h3>Pregunta ${i + 1}</h3>
+                const bloque =
+                    document.createElement("div");
 
-            <p>Pregunta:</p>
-            <input type="text" placeholder="Escribí la pregunta">
+                bloque.className = "pregunta";
 
-            <p>Respuesta 1:</p>
-            <input type="text" placeholder="Respuesta">
 
-            <p>Respuesta 2:</p>
-            <input type="text" placeholder="Respuesta">
+                bloque.innerHTML = `
 
-            <p>Respuesta 3:</p>
-            <input type="text" placeholder="Respuesta">
+                    <hr>
 
-            <p>Respuesta 4:</p>
-            <input type="text" placeholder="Respuesta">
+                    <h3>Pregunta ${i + 1}</h3>
 
-            <p>Respuesta correcta:</p>
-            <select>
-                <option value="0">Respuesta 1</option>
-                <option value="1">Respuesta 2</option>
-                <option value="2">Respuesta 3</option>
-                <option value="3">Respuesta 4</option>
-            </select>
+                    <p>Pregunta:</p>
 
-            <br><br>
-        `;
+                    <input
+                        type="text"
+                        placeholder="Escribí la pregunta"
+                    >
 
-        contenedor.appendChild(bloque);
-    }
-function crearExamen() {
 
-    const materia =
-        document.getElementById("materia").value.trim();
+                    <p>Respuesta 1:</p>
 
-    const cantidad =
-        Number(document.getElementById("cantidadPreguntas").value);
+                    <input
+                        type="text"
+                        placeholder="Respuesta"
+                    >
 
-    if (materia === "") {
-        alert("Escribí el nombre de la materia.");
-        return;
-    }
 
-    const bloques =
-        document.querySelectorAll(".pregunta");
+                    <p>Respuesta 2:</p>
 
-    const preguntas = [];
+                    <input
+                        type="text"
+                        placeholder="Respuesta"
+                    >
 
-    bloques.forEach((bloque) => {
 
-        const campos =
-            bloque.querySelectorAll("input");
+                    <p>Respuesta 3:</p>
 
-        const pregunta =
-            campos[0].value.trim();
+                    <input
+                        type="text"
+                        placeholder="Respuesta"
+                    >
 
-        const opciones = [
-            campos[1].value.trim(),
-            campos[2].value.trim(),
-            campos[3].value.trim(),
-            campos[4].value.trim()
-        ];
 
-        const correcta =
-            Number(bloque.querySelector("select").value);
+                    <p>Respuesta 4:</p>
 
-        preguntas.push({
-            pregunta: pregunta,
-            opciones: opciones,
-            correcta: correcta
-        });
+                    <input
+                        type="text"
+                        placeholder="Respuesta"
+                    >
 
-    });
 
-    console.log("Materia:", materia);
-    console.log("Cantidad de preguntas:", cantidad);
-    console.log("Preguntas:", preguntas);
+                    <p>Respuesta correcta:</p>
 
-    alert("¡Configuración guardada!");
+                    <select>
 
-}
+                        <option value="0">
+                            Respuesta 1
+                        </option>
+
+                        <option value="1">
+                            Respuesta 2
+                        </option>
+
+                        <option value="2">
+                            Respuesta 3
+                        </option>
+
+                        <option value="3">
+                            Respuesta 4
+                        </option>
+
+                    </select>
+
+                    <br>
+                    <br>
+
+                `;
+
+
+                contenedor.appendChild(bloque);
+            }
+        }
+
+
+        // ========================================
+        // GENERAR EXAMEN
+        // ========================================
+
+        function crearExamen() {
+
+            const materia =
+                document
+                    .getElementById("materia")
+                    .value
+                    .trim();
+
+
+            const cantidad =
+                Number(
+                    document
+                        .getElementById("cantidadPreguntas")
+                        .value
+                );
+
+
+            if (materia === "") {
+
+                alert(
+                    "Escribí el nombre de la materia."
+                );
+
+                return;
+            }
+
+
+            const bloques =
+                document.querySelectorAll(
+                    ".pregunta"
+                );
+
+
+            const preguntas = [];
+
+
+            bloques.forEach((bloque) => {
+
+                const campos =
+                    bloque.querySelectorAll("input");
+
+
+                const pregunta =
+                    campos[0]
+                        .value
+                        .trim();
+
+
+                const opciones = [
+
+                    campos[1]
+                        .value
+                        .trim(),
+
+                    campos[2]
+                        .value
+                        .trim(),
+
+                    campos[3]
+                        .value
+                        .trim(),
+
+                    campos[4]
+                        .value
+                        .trim()
+
+                ];
+
+
+                const correcta =
+                    Number(
+                        bloque
+                            .querySelector("select")
+                            .value
+                    );
+
+
+                preguntas.push({
+
+                    pregunta: pregunta,
+
+                    opciones: opciones,
+
+                    correcta: correcta
+
+                });
+
+            });
+
+
+            // ========================================
+            // MOSTRAR INFORMACIÓN
+            // ========================================
+
+            console.log(
+                "Materia:",
+                materia
+            );
+
+
+            console.log(
+                "Cantidad de preguntas:",
+                cantidad
+            );
+
+
+            console.log(
+                "Preguntas:",
+                preguntas
+            );
+
+
+            alert(
+                "¡Configuración guardada!"
+            );
 
         }
 
