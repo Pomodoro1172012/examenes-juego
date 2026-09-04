@@ -10,22 +10,39 @@ const URL_APPS_SCRIPT =
 // OBTENER ID DEL EXAMEN
 // ========================================
 
-const parametros = new URLSearchParams(
-    window.location.search
-);
+const parametros =
+    new URLSearchParams(
+        window.location.search
+    );
 
-const idExamen = parametros.get("id");
+const idExamen =
+    parametros.get("id");
 
 
 // ========================================
-// CARGAR EXAMEN
+// VARIABLES DEL EXAMEN
+// ========================================
+
+let configuracionExamen = null;
+
+let preguntaActual = 0;
+
+let respuestasCorrectas = 0;
+
+let examenComenzado = false;
+
+
+// ========================================
+// CARGAR EXAMEN DESDE GOOGLE
 // ========================================
 
 async function cargarExamen() {
 
     if (!idExamen) {
 
-        alert("No se encontró el ID del examen.");
+        alert(
+            "No se encontró el ID del examen."
+        );
 
         return;
     }
@@ -53,23 +70,38 @@ async function cargarExamen() {
 
         if (!datos.ok) {
 
-            alert("No se encontró ese examen.");
+            alert(
+                "No se encontró ese examen."
+            );
 
             return;
         }
 
 
-        window.configuracionExamen =
+        configuracionExamen =
             datos.examen;
 
 
         console.log(
             "Configuración cargada:",
-            window.configuracionExamen
+            configuracionExamen
         );
 
 
-        iniciarExamen();
+        // Mostrar materia en la pantalla inicial
+
+        const nombreMateria =
+            document.getElementById(
+                "nombreMateria"
+            );
+
+
+        if (nombreMateria) {
+
+            nombreMateria.textContent =
+                configuracionExamen.materia;
+
+        }
 
 
     } catch (error) {
@@ -90,55 +122,88 @@ async function cargarExamen() {
 
 
 // ========================================
-// MOSTRAR EXAMEN
+// COMENZAR EXAMEN
 // ========================================
 
-// ========================================
-// INICIAR EXAMEN
-// ========================================
+function comenzarExamen() {
 
-let preguntaActual = 0;
+    // Comprobar que el examen haya cargado
 
+    if (!configuracionExamen) {
 
-function iniciarExamen() {
-
-    const examen =
-        window.configuracionExamen;
-
-
-    let contenedor =
-        document.getElementById("preguntas");
-
-
-    if (!contenedor) {
-
-        contenedor =
-            document.createElement("div");
-
-        contenedor.id =
-            "preguntas";
-
-        document.body.appendChild(
-            contenedor
+        alert(
+            "El examen todavía se está cargando. Esperá un momento."
         );
 
+        return;
     }
 
 
-    contenedor.innerHTML = "";
+    // Comprobar nombre
+
+    const nombre =
+        document
+            .getElementById("nombre")
+            .value
+            .trim();
 
 
-    const titulo =
-        document.querySelector("h1");
+    if (nombre === "") {
 
+        alert(
+            "Escribí tu nombre antes de comenzar."
+        );
 
-    if (titulo) {
-
-        titulo.textContent =
-            examen.materia;
-
+        return;
     }
 
+
+    // Comprobar curso
+
+    const curso =
+        document
+            .getElementById("curso")
+            .value
+            .trim();
+
+
+    if (curso === "") {
+
+        alert(
+            "Escribí tu curso antes de comenzar."
+        );
+
+        return;
+    }
+
+
+    // Marcar que comenzó
+
+    examenComenzado = true;
+
+
+    // Empezamos desde la primera pregunta
+
+    preguntaActual = 0;
+
+    respuestasCorrectas = 0;
+
+
+    // Ocultar pantalla inicial
+
+    document.getElementById(
+        "pantallaInicio"
+    ).style.display = "none";
+
+
+    // Mostrar pantalla del examen
+
+    document.getElementById(
+        "pantallaExamen"
+    ).style.display = "block";
+
+
+    // Mostrar primera pregunta
 
     mostrarPregunta();
 
@@ -151,78 +216,68 @@ function iniciarExamen() {
 
 function mostrarPregunta() {
 
-    const examen =
-        window.configuracionExamen;
+    const preguntas =
+        configuracionExamen.preguntas;
 
 
-    const contenedor =
-        document.getElementById(
-            "preguntas"
-        );
+    // ¿Terminamos?
 
-
-    contenedor.innerHTML = "";
-
-
-    // Si ya terminamos
     if (
         preguntaActual >=
-        examen.preguntas.length
+        preguntas.length
     ) {
 
-        mostrarFinal();
+        terminarExamen();
 
         return;
-
     }
 
 
     const pregunta =
-        examen.preguntas[
-            preguntaActual
-        ];
+        preguntas[preguntaActual];
 
 
-    const bloque =
-        document.createElement("div");
+    // Número de pregunta
 
-
-    bloque.className =
-        "pregunta";
-
-
-    const numero =
-        document.createElement("h2");
-
-
-    numero.textContent =
+    document.getElementById(
+        "numeroPregunta"
+    ).textContent =
         "Pregunta " +
         (preguntaActual + 1) +
         " de " +
-        examen.preguntas.length;
+        preguntas.length;
 
 
-    bloque.appendChild(
-        numero
-    );
+    // Texto
 
-
-    const texto =
-        document.createElement("h3");
-
-
-    texto.textContent =
+    document.getElementById(
+        "textoPregunta"
+    ).textContent =
         pregunta.pregunta;
 
 
-    bloque.appendChild(
-        texto
-    );
+    // Contenedor de opciones
+
+    const opciones =
+        document.getElementById(
+            "opciones"
+        );
 
 
-    // Crear respuestas
+    opciones.innerHTML = "";
+
+
+    // Limpiar resultado anterior
+
+    document.getElementById(
+        "resultado"
+    ).textContent = "";
+
+
+    // Crear botones
+
     pregunta.opciones.forEach(
-        (opcion, indiceOpcion) => {
+        (opcion, indice) => {
 
             const boton =
                 document.createElement(
@@ -246,31 +301,17 @@ function mostrarPregunta() {
                 function () {
 
                     comprobarRespuesta(
-                        pregunta,
-                        indiceOpcion,
-                        bloque
+                        indice
                     );
 
                 };
 
 
-            bloque.appendChild(
+            opciones.appendChild(
                 boton
             );
 
-
-            bloque.appendChild(
-                document.createElement(
-                    "br"
-                )
-            );
-
         }
-    );
-
-
-    contenedor.appendChild(
-        bloque
     );
 
 }
@@ -281,16 +322,21 @@ function mostrarPregunta() {
 // ========================================
 
 function comprobarRespuesta(
-    pregunta,
-    respuestaElegida,
-    bloque
+    respuestaElegida
 ) {
 
+    const pregunta =
+        configuracionExamen
+            .preguntas[preguntaActual];
+
+
     const botones =
-        bloque.querySelectorAll(
+        document.querySelectorAll(
             ".opcion"
         );
 
+
+    // Evitar responder dos veces
 
     botones.forEach(
         boton => {
@@ -301,63 +347,82 @@ function comprobarRespuesta(
     );
 
 
+    const resultado =
+        document.getElementById(
+            "resultado"
+        );
+
+
     if (
         respuestaElegida ===
         pregunta.correcta
     ) {
 
-        alert(
-            "✅ ¡Correcto!"
-        );
+        respuestasCorrectas++;
+
+
+        resultado.textContent =
+            "✅ ¡Correcto!";
 
     } else {
 
-        alert(
-            "❌ Incorrecto.\n\n" +
-            "La respuesta correcta era: " +
+        resultado.textContent =
+            "❌ Incorrecto. La respuesta correcta era: " +
             pregunta.opciones[
                 pregunta.correcta
-            ]
-        );
+            ];
 
     }
 
 
-    // Pasar a la siguiente
-    preguntaActual++;
+    // Esperar un poquito antes
+    // de pasar a la siguiente
 
+    setTimeout(
+        function () {
 
-    mostrarPregunta();
+            preguntaActual++;
+
+            mostrarPregunta();
+
+        },
+        1200
+    );
 
 }
 
 
 // ========================================
-// FINAL DEL EXAMEN
+// TERMINAR EXAMEN
 // ========================================
 
-function mostrarFinal() {
+function terminarExamen() {
 
-    const contenedor =
+    const pantalla =
         document.getElementById(
-            "preguntas"
+            "pantallaExamen"
         );
 
 
-    contenedor.innerHTML = `
+    pantalla.innerHTML = `
 
         <h2>🎉 Examen terminado</h2>
 
         <p>
-            Completaste todas las preguntas.
+            Respondiste correctamente
+            ${respuestasCorrectas}
+            de
+            ${configuracionExamen.preguntas.length}
+            preguntas.
         </p>
 
     `;
 
 }
 
+
 // ========================================
-// COMENZAR
+// COMENZAR A CARGAR
 // ========================================
 
 cargarExamen();
