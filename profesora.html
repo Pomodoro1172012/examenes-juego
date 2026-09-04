@@ -1,326 +1,367 @@
 <!DOCTYPE html>
+
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Configurar examen</title>
+```
+<title>Configurar examen</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
+```
+
 </head>
 
 <body>
 
-    <div id="configurador">
+```
+<div id="configurador">
 
-        <h1>⚙️ Configurar examen</h1>
+    <h1>⚙️ Configurar examen</h1>
 
-        <p>Materia:</p>
+    <p>Materia:</p>
 
-        <input
-            type="text"
-            id="materia"
-            placeholder="Ej: Historia"
-        >
+    <input
+        type="text"
+        id="materia"
+        placeholder="Ej: Historia"
+    >
 
-        <p>Cantidad de preguntas:</p>
+    <p>Cantidad de preguntas:</p>
 
-        <input
-            type="number"
-            id="cantidadPreguntas"
-            min="1"
-            max="50"
-            value="10"
-        >
+    <input
+        type="number"
+        id="cantidadPreguntas"
+        min="1"
+        max="50"
+        value="10"
+    >
 
-        <h2>Preguntas</h2>
+    <h2>Preguntas</h2>
 
-        <div id="preguntas"></div>
+    <div id="preguntas"></div>
 
-        <br>
+    <br>
 
-        <button
-            type="button"
-            onclick="generarPreguntas()"
-        >
-            Crear preguntas
-        </button>
+    <button
+        type="button"
+        onclick="generarPreguntas()"
+    >
+        Crear preguntas
+    </button>
 
-        <br>
-        <br>
+    <br>
+    <br>
 
-        <button
-            type="button"
-            onclick="crearExamen()"
-        >
-            Generar examen
-        </button>
+    <button
+        type="button"
+        onclick="crearExamen()"
+    >
+        Generar examen
+    </button>
 
-    </div>
+</div>
 
 
-    <script>
+<script>
 
-        // ========================================
-        // CREAR PREGUNTAS
-        // ========================================
+    // ========================================
+    // CREAR PREGUNTAS
+    // ========================================
 
-        function generarPreguntas() {
+    function generarPreguntas() {
 
-            const cantidad = Number(
-                document.getElementById("cantidadPreguntas").value
+        const cantidad = Number(
+            document.getElementById("cantidadPreguntas").value
+        );
+
+        const contenedor =
+            document.getElementById("preguntas");
+
+        contenedor.innerHTML = "";
+
+
+        for (let i = 0; i < cantidad; i++) {
+
+            const bloque =
+                document.createElement("div");
+
+            bloque.className = "pregunta";
+
+
+            bloque.innerHTML = `
+
+                <hr>
+
+                <h3>Pregunta ${i + 1}</h3>
+
+                <p>Pregunta:</p>
+
+                <input
+                    type="text"
+                    placeholder="Escribí la pregunta"
+                >
+
+                <p>Respuesta 1:</p>
+
+                <input
+                    type="text"
+                    placeholder="Respuesta"
+                >
+
+                <p>Respuesta 2:</p>
+
+                <input
+                    type="text"
+                    placeholder="Respuesta"
+                >
+
+                <p>Respuesta 3:</p>
+
+                <input
+                    type="text"
+                    placeholder="Respuesta"
+                >
+
+                <p>Respuesta 4:</p>
+
+                <input
+                    type="text"
+                    placeholder="Respuesta"
+                >
+
+                <p>Respuesta correcta:</p>
+
+                <select>
+
+                    <option value="0">
+                        Respuesta 1
+                    </option>
+
+                    <option value="1">
+                        Respuesta 2
+                    </option>
+
+                    <option value="2">
+                        Respuesta 3
+                    </option>
+
+                    <option value="3">
+                        Respuesta 4
+                    </option>
+
+                </select>
+
+                <br>
+                <br>
+
+            `;
+
+
+            contenedor.appendChild(bloque);
+        }
+    }
+
+
+    // ========================================
+    // CREAR ID ÚNICO
+    // ========================================
+
+    function generarID() {
+
+        return (
+            Date.now().toString(36) +
+            Math.random()
+                .toString(36)
+                .substring(2, 8)
+        );
+
+    }
+
+
+    // ========================================
+    // GENERAR NUEVO EXAMEN
+    // ========================================
+
+    function crearExamen() {
+
+        const materia =
+            document
+                .getElementById("materia")
+                .value
+                .trim();
+
+
+        const cantidad =
+            Number(
+                document
+                    .getElementById("cantidadPreguntas")
+                    .value
             );
 
-            const contenedor =
-                document.getElementById("preguntas");
 
-            contenedor.innerHTML = "";
+        if (materia === "") {
 
+            alert(
+                "Escribí el nombre de la materia."
+            );
 
-            for (let i = 0; i < cantidad; i++) {
-
-                const bloque =
-                    document.createElement("div");
-
-                bloque.className = "pregunta";
-
-
-                bloque.innerHTML = `
-
-                    <hr>
-
-                    <h3>Pregunta ${i + 1}</h3>
-
-                    <p>Pregunta:</p>
-
-                    <input
-                        type="text"
-                        placeholder="Escribí la pregunta"
-                    >
-
-                    <p>Respuesta 1:</p>
-
-                    <input
-                        type="text"
-                        placeholder="Respuesta"
-                    >
-
-                    <p>Respuesta 2:</p>
-
-                    <input
-                        type="text"
-                        placeholder="Respuesta"
-                    >
-
-                    <p>Respuesta 3:</p>
-
-                    <input
-                        type="text"
-                        placeholder="Respuesta"
-                    >
-
-                    <p>Respuesta 4:</p>
-
-                    <input
-                        type="text"
-                        placeholder="Respuesta"
-                    >
-
-                    <p>Respuesta correcta:</p>
-
-                    <select>
-
-                        <option value="0">
-                            Respuesta 1
-                        </option>
-
-                        <option value="1">
-                            Respuesta 2
-                        </option>
-
-                        <option value="2">
-                            Respuesta 3
-                        </option>
-
-                        <option value="3">
-                            Respuesta 4
-                        </option>
-
-                    </select>
-
-                    <br>
-                    <br>
-
-                `;
-
-
-                contenedor.appendChild(bloque);
-            }
+            return;
         }
 
 
-        // ========================================
-        // GENERAR Y GUARDAR EXAMEN
-        // ========================================
+        const bloques =
+            document.querySelectorAll(
+                ".pregunta"
+            );
 
-        function crearExamen() {
 
-            const materia =
-                document
-                    .getElementById("materia")
+        if (bloques.length === 0) {
+
+            alert(
+                "Primero apretá 'Crear preguntas'."
+            );
+
+            return;
+        }
+
+
+        const preguntas = [];
+
+
+        bloques.forEach((bloque) => {
+
+            const campos =
+                bloque.querySelectorAll("input");
+
+
+            const pregunta =
+                campos[0]
                     .value
                     .trim();
 
 
-            const cantidad =
+            const opciones = [
+
+                campos[1]
+                    .value
+                    .trim(),
+
+                campos[2]
+                    .value
+                    .trim(),
+
+                campos[3]
+                    .value
+                    .trim(),
+
+                campos[4]
+                    .value
+                    .trim()
+
+            ];
+
+
+            const correcta =
                 Number(
-                    document
-                        .getElementById("cantidadPreguntas")
+                    bloque
+                        .querySelector("select")
                         .value
                 );
 
 
-            if (materia === "") {
+            preguntas.push({
 
-                alert(
-                    "Escribí el nombre de la materia."
-                );
+                pregunta: pregunta,
 
-                return;
-            }
+                opciones: opciones,
 
-
-            const bloques =
-                document.querySelectorAll(
-                    ".pregunta"
-                );
-
-
-            if (bloques.length === 0) {
-
-                alert(
-                    "Primero apretá 'Crear preguntas'."
-                );
-
-                return;
-            }
-
-
-            const preguntas = [];
-
-
-            bloques.forEach((bloque) => {
-
-                const campos =
-                    bloque.querySelectorAll("input");
-
-
-                const pregunta =
-                    campos[0]
-                        .value
-                        .trim();
-
-
-                const opciones = [
-
-                    campos[1]
-                        .value
-                        .trim(),
-
-                    campos[2]
-                        .value
-                        .trim(),
-
-                    campos[3]
-                        .value
-                        .trim(),
-
-                    campos[4]
-                        .value
-                        .trim()
-
-                ];
-
-
-                const correcta =
-                    Number(
-                        bloque
-                            .querySelector("select")
-                            .value
-                    );
-
-
-                preguntas.push({
-
-                    pregunta: pregunta,
-
-                    opciones: opciones,
-
-                    correcta: correcta
-
-                });
+                correcta: correcta
 
             });
 
-
-            // ========================================
-            // CREAR CONFIGURACIÓN
-            // ========================================
-
-            const configuracionExamen = {
-
-                materia: materia,
-
-                cantidadPreguntas: cantidad,
-
-                preguntas: preguntas
-
-            };
+        });
 
 
-            // ========================================
-            // GUARDAR CONFIGURACIÓN
-            // ========================================
+        // ========================================
+        // CREAR EL EXAMEN
+        // ========================================
 
-            localStorage.setItem(
-                "configuracionExamen",
-                JSON.stringify(configuracionExamen)
-            );
+        const examen = {
 
+            id: generarID(),
 
-            // ========================================
-            // COMPROBAR
-            // ========================================
+            materia: materia,
 
-            console.log(
-                "Materia:",
-                materia
-            );
+            cantidadPreguntas: cantidad,
 
-            console.log(
-                "Cantidad de preguntas:",
-                cantidad
-            );
+            preguntas: preguntas
 
-            console.log(
-                "Preguntas:",
-                preguntas
-            );
-
-            console.log(
-                "Configuración completa:",
-                configuracionExamen
-            );
+        };
 
 
-            alert(
-                "¡Examen guardado correctamente!"
-            );
+        // ========================================
+        // OBTENER EXÁMENES ANTERIORES
+        // ========================================
+
+        let examenes = JSON.parse(
+            localStorage.getItem("examenes")
+        );
+
+
+        if (!Array.isArray(examenes)) {
+
+            examenes = [];
 
         }
 
-    </script>
+
+        // ========================================
+        // AGREGAR EL NUEVO EXAMEN
+        // ========================================
+
+        examenes.push(examen);
+
+
+        // ========================================
+        // GUARDAR TODOS LOS EXÁMENES
+        // ========================================
+
+        localStorage.setItem(
+            "examenes",
+            JSON.stringify(examenes)
+        );
+
+
+        // ========================================
+        // MOSTRAR INFORMACIÓN
+        // ========================================
+
+        console.log(
+            "Nuevo examen creado:",
+            examen
+        );
+
+        console.log(
+            "Todos los exámenes:",
+            examenes
+        );
+
+
+        alert(
+            "¡Examen creado correctamente!\n\n" +
+            "Materia: " +
+            materia +
+            "\nID: " +
+            examen.id
+        );
+
+    }
+
+</script>
+```
 
 </body>
 
