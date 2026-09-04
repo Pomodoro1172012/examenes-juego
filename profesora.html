@@ -23,36 +23,13 @@
 
 <h2>Preguntas</h2>
 
-<div id="preguntas">
+<div id="preguntas"></div>
 
-    <div class="pregunta">
+<br>
 
-        <p>Pregunta 1:</p>
-        <input type="text" placeholder="Escribí la pregunta">
-
-        <p>Respuesta 1:</p>
-        <input type="text" placeholder="Respuesta">
-
-        <p>Respuesta 2:</p>
-        <input type="text" placeholder="Respuesta">
-
-        <p>Respuesta 3:</p>
-        <input type="text" placeholder="Respuesta">
-
-        <p>Respuesta 4:</p>
-        <input type="text" placeholder="Respuesta">
-
-        <p>Respuesta correcta:</p>
-        <select>
-            <option value="0">Respuesta 1</option>
-            <option value="1">Respuesta 2</option>
-            <option value="2">Respuesta 3</option>
-            <option value="3">Respuesta 4</option>
-        </select>
-
-    </div>
-
-</div>
+<button type="button" onclick="generarPreguntas()">
+    Crear preguntas
+</button>
 
 <br>
         <br><br>
@@ -65,7 +42,56 @@
 
 
     <script>
+function generarPreguntas() {
 
+    const cantidad = Number(
+        document.getElementById("cantidadPreguntas").value
+    );
+
+    const contenedor = document.getElementById("preguntas");
+
+    contenedor.innerHTML = "";
+
+    for (let i = 0; i < cantidad; i++) {
+
+        const bloque = document.createElement("div");
+
+        bloque.className = "pregunta";
+
+        bloque.innerHTML = `
+            <hr>
+
+            <h3>Pregunta ${i + 1}</h3>
+
+            <p>Pregunta:</p>
+            <input type="text" placeholder="Escribí la pregunta">
+
+            <p>Respuesta 1:</p>
+            <input type="text" placeholder="Respuesta">
+
+            <p>Respuesta 2:</p>
+            <input type="text" placeholder="Respuesta">
+
+            <p>Respuesta 3:</p>
+            <input type="text" placeholder="Respuesta">
+
+            <p>Respuesta 4:</p>
+            <input type="text" placeholder="Respuesta">
+
+            <p>Respuesta correcta:</p>
+            <select>
+                <option value="0">Respuesta 1</option>
+                <option value="1">Respuesta 2</option>
+                <option value="2">Respuesta 3</option>
+                <option value="3">Respuesta 4</option>
+            </select>
+
+            <br><br>
+        `;
+
+        contenedor.appendChild(bloque);
+    }
+}
         function crearExamen() {
 
             const materia =
