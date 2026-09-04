@@ -93,25 +93,30 @@ async function cargarExamen() {
 // MOSTRAR EXAMEN
 // ========================================
 
+// ========================================
+// INICIAR EXAMEN
+// ========================================
+
+let preguntaActual = 0;
+
+
 function iniciarExamen() {
 
     const examen =
         window.configuracionExamen;
 
 
-    // Buscar el lugar donde van las preguntas
     let contenedor =
         document.getElementById("preguntas");
 
 
-    // Si no existe, lo creamos
     if (!contenedor) {
 
         contenedor =
             document.createElement("div");
 
-        contenedor.id = "preguntas";
-
+        contenedor.id =
+            "preguntas";
 
         document.body.appendChild(
             contenedor
@@ -120,11 +125,9 @@ function iniciarExamen() {
     }
 
 
-    // Limpiar contenido anterior
     contenedor.innerHTML = "";
 
 
-    // Mostrar materia
     const titulo =
         document.querySelector("h1");
 
@@ -137,89 +140,137 @@ function iniciarExamen() {
     }
 
 
-    // ========================================
-    // MOSTRAR CADA PREGUNTA
-    // ========================================
+    mostrarPregunta();
 
-    examen.preguntas.forEach(
-        (pregunta, indice) => {
-
-            const bloque =
-                document.createElement("div");
+}
 
 
-            bloque.className =
-                "pregunta";
+// ========================================
+// MOSTRAR UNA SOLA PREGUNTA
+// ========================================
+
+function mostrarPregunta() {
+
+    const examen =
+        window.configuracionExamen;
 
 
-            const textoPregunta =
-                document.createElement("h2");
+    const contenedor =
+        document.getElementById(
+            "preguntas"
+        );
 
 
-            textoPregunta.textContent =
-                (indice + 1) +
-                ". " +
-                pregunta.pregunta;
+    contenedor.innerHTML = "";
+
+
+    // Si ya terminamos
+    if (
+        preguntaActual >=
+        examen.preguntas.length
+    ) {
+
+        mostrarFinal();
+
+        return;
+
+    }
+
+
+    const pregunta =
+        examen.preguntas[
+            preguntaActual
+        ];
+
+
+    const bloque =
+        document.createElement("div");
+
+
+    bloque.className =
+        "pregunta";
+
+
+    const numero =
+        document.createElement("h2");
+
+
+    numero.textContent =
+        "Pregunta " +
+        (preguntaActual + 1) +
+        " de " +
+        examen.preguntas.length;
+
+
+    bloque.appendChild(
+        numero
+    );
+
+
+    const texto =
+        document.createElement("h3");
+
+
+    texto.textContent =
+        pregunta.pregunta;
+
+
+    bloque.appendChild(
+        texto
+    );
+
+
+    // Crear respuestas
+    pregunta.opciones.forEach(
+        (opcion, indiceOpcion) => {
+
+            const boton =
+                document.createElement(
+                    "button"
+                );
+
+
+            boton.textContent =
+                opcion;
+
+
+            boton.type =
+                "button";
+
+
+            boton.className =
+                "opcion";
+
+
+            boton.onclick =
+                function () {
+
+                    comprobarRespuesta(
+                        pregunta,
+                        indiceOpcion,
+                        bloque
+                    );
+
+                };
 
 
             bloque.appendChild(
-                textoPregunta
+                boton
             );
 
 
-            // ========================================
-            // CREAR OPCIONES
-            // ========================================
-
-            pregunta.opciones.forEach(
-                (opcion, indiceOpcion) => {
-
-                    const boton =
-                        document.createElement("button");
-
-
-                    boton.textContent =
-                        opcion;
-
-
-                    boton.type =
-                        "button";
-
-
-                    boton.className =
-                        "opcion";
-
-
-                    boton.onclick =
-                        function () {
-
-                            comprobarRespuesta(
-                                pregunta,
-                                indiceOpcion,
-                                bloque
-                            );
-
-                        };
-
-
-                    bloque.appendChild(
-                        boton
-                    );
-
-
-                    bloque.appendChild(
-                        document.createElement("br")
-                    );
-
-                }
-            );
-
-
-            contenedor.appendChild(
-                bloque
+            bloque.appendChild(
+                document.createElement(
+                    "br"
+                )
             );
 
         }
+    );
+
+
+    contenedor.appendChild(
+        bloque
     );
 
 }
@@ -241,7 +292,6 @@ function comprobarRespuesta(
         );
 
 
-    // Desactivar todos los botones
     botones.forEach(
         boton => {
 
@@ -256,7 +306,9 @@ function comprobarRespuesta(
         pregunta.correcta
     ) {
 
-        alert("✅ ¡Correcto!");
+        alert(
+            "✅ ¡Correcto!"
+        );
 
     } else {
 
@@ -270,8 +322,39 @@ function comprobarRespuesta(
 
     }
 
+
+    // Pasar a la siguiente
+    preguntaActual++;
+
+
+    mostrarPregunta();
+
 }
 
+
+// ========================================
+// FINAL DEL EXAMEN
+// ========================================
+
+function mostrarFinal() {
+
+    const contenedor =
+        document.getElementById(
+            "preguntas"
+        );
+
+
+    contenedor.innerHTML = `
+
+        <h2>🎉 Examen terminado</h2>
+
+        <p>
+            Completaste todas las preguntas.
+        </p>
+
+    `;
+
+}
 
 // ========================================
 // COMENZAR
