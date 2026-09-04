@@ -7,7 +7,7 @@ const URL_APPS_SCRIPT =
 
 
 // ========================================
-// OBTENER ID DEL EXAMEN DESDE EL ENLACE
+// OBTENER ID DEL EXAMEN
 // ========================================
 
 const parametros = new URLSearchParams(
@@ -18,19 +18,16 @@ const idExamen = parametros.get("id");
 
 
 // ========================================
-// CARGAR EXAMEN DESDE GOOGLE
+// CARGAR EXAMEN
 // ========================================
 
 async function cargarExamen() {
 
     if (!idExamen) {
 
-        alert(
-            "No se encontró el ID del examen."
-        );
+        alert("No se encontró el ID del examen.");
 
         return;
-
     }
 
 
@@ -56,16 +53,12 @@ async function cargarExamen() {
 
         if (!datos.ok) {
 
-            alert(
-                "No se encontró ese examen."
-            );
+            alert("No se encontró ese examen.");
 
             return;
-
         }
 
 
-        // Guardamos el examen en memoria
         window.configuracionExamen =
             datos.examen;
 
@@ -97,7 +90,7 @@ async function cargarExamen() {
 
 
 // ========================================
-// INICIAR EXAMEN
+// MOSTRAR EXAMEN
 // ========================================
 
 function iniciarExamen() {
@@ -106,10 +99,29 @@ function iniciarExamen() {
         window.configuracionExamen;
 
 
-    console.log(
-        "Iniciando examen:",
-        examen
-    );
+    // Buscar el lugar donde van las preguntas
+    let contenedor =
+        document.getElementById("preguntas");
+
+
+    // Si no existe, lo creamos
+    if (!contenedor) {
+
+        contenedor =
+            document.createElement("div");
+
+        contenedor.id = "preguntas";
+
+
+        document.body.appendChild(
+            contenedor
+        );
+
+    }
+
+
+    // Limpiar contenido anterior
+    contenedor.innerHTML = "";
 
 
     // Mostrar materia
@@ -126,19 +138,137 @@ function iniciarExamen() {
 
 
     // ========================================
-    // ACÁ DESPUÉS VAMOS A CONECTAR
-    // EL SISTEMA DE PREGUNTAS
+    // MOSTRAR CADA PREGUNTA
     // ========================================
 
-    console.log(
-        "Cantidad de preguntas:",
-        examen.cantidadPreguntas
+    examen.preguntas.forEach(
+        (pregunta, indice) => {
+
+            const bloque =
+                document.createElement("div");
+
+
+            bloque.className =
+                "pregunta";
+
+
+            const textoPregunta =
+                document.createElement("h2");
+
+
+            textoPregunta.textContent =
+                (indice + 1) +
+                ". " +
+                pregunta.pregunta;
+
+
+            bloque.appendChild(
+                textoPregunta
+            );
+
+
+            // ========================================
+            // CREAR OPCIONES
+            // ========================================
+
+            pregunta.opciones.forEach(
+                (opcion, indiceOpcion) => {
+
+                    const boton =
+                        document.createElement("button");
+
+
+                    boton.textContent =
+                        opcion;
+
+
+                    boton.type =
+                        "button";
+
+
+                    boton.className =
+                        "opcion";
+
+
+                    boton.onclick =
+                        function () {
+
+                            comprobarRespuesta(
+                                pregunta,
+                                indiceOpcion,
+                                bloque
+                            );
+
+                        };
+
+
+                    bloque.appendChild(
+                        boton
+                    );
+
+
+                    bloque.appendChild(
+                        document.createElement("br")
+                    );
+
+                }
+            );
+
+
+            contenedor.appendChild(
+                bloque
+            );
+
+        }
     );
 
-    console.log(
-        "Preguntas:",
-        examen.preguntas
+}
+
+
+// ========================================
+// COMPROBAR RESPUESTA
+// ========================================
+
+function comprobarRespuesta(
+    pregunta,
+    respuestaElegida,
+    bloque
+) {
+
+    const botones =
+        bloque.querySelectorAll(
+            ".opcion"
+        );
+
+
+    // Desactivar todos los botones
+    botones.forEach(
+        boton => {
+
+            boton.disabled = true;
+
+        }
     );
+
+
+    if (
+        respuestaElegida ===
+        pregunta.correcta
+    ) {
+
+        alert("✅ ¡Correcto!");
+
+    } else {
+
+        alert(
+            "❌ Incorrecto.\n\n" +
+            "La respuesta correcta era: " +
+            pregunta.opciones[
+                pregunta.correcta
+            ]
+        );
+
+    }
 
 }
 
