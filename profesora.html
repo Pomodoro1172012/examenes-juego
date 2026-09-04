@@ -24,7 +24,6 @@
             placeholder="Ej: Historia"
         >
 
-
         <p>Cantidad de preguntas:</p>
 
         <input
@@ -100,14 +99,12 @@
                         placeholder="Escribí la pregunta"
                     >
 
-
                     <p>Respuesta 1:</p>
 
                     <input
                         type="text"
                         placeholder="Respuesta"
                     >
-
 
                     <p>Respuesta 2:</p>
 
@@ -116,7 +113,6 @@
                         placeholder="Respuesta"
                     >
 
-
                     <p>Respuesta 3:</p>
 
                     <input
@@ -124,14 +120,12 @@
                         placeholder="Respuesta"
                     >
 
-
                     <p>Respuesta 4:</p>
 
                     <input
                         type="text"
                         placeholder="Respuesta"
                     >
-
 
                     <p>Respuesta correcta:</p>
 
@@ -167,7 +161,7 @@
 
 
         // ========================================
-        // GENERAR EXAMEN
+        // GENERAR Y GUARDAR EXAMEN
         // ========================================
 
         function crearExamen() {
@@ -201,6 +195,16 @@
                 document.querySelectorAll(
                     ".pregunta"
                 );
+
+
+            if (bloques.length === 0) {
+
+                alert(
+                    "Primero apretá 'Crear preguntas'."
+                );
+
+                return;
+            }
 
 
             const preguntas = [];
@@ -261,7 +265,32 @@
 
 
             // ========================================
-            // MOSTRAR INFORMACIÓN
+            // CREAR CONFIGURACIÓN
+            // ========================================
+
+            const configuracionExamen = {
+
+                materia: materia,
+
+                cantidadPreguntas: cantidad,
+
+                preguntas: preguntas
+
+            };
+
+
+            // ========================================
+            // GUARDAR CONFIGURACIÓN
+            // ========================================
+
+            localStorage.setItem(
+                "configuracionExamen",
+                JSON.stringify(configuracionExamen)
+            );
+
+
+            // ========================================
+            // COMPROBAR
             // ========================================
 
             console.log(
@@ -269,44 +298,26 @@
                 materia
             );
 
-
             console.log(
                 "Cantidad de preguntas:",
                 cantidad
             );
 
+            console.log(
+                "Preguntas:",
+                preguntas
+            );
 
-           console.log("Preguntas:", preguntas);
-
-
-// ========================================
-// GUARDAR CONFIGURACIÓN
-// ========================================
-
-const configuracionExamen = {
-
-    materia: materia,
-
-    cantidadPreguntas: cantidad,
-
-    preguntas: preguntas
-
-};
+            console.log(
+                "Configuración completa:",
+                configuracionExamen
+            );
 
 
-localStorage.setItem(
-    "configuracionExamen",
-    JSON.stringify(configuracionExamen)
-);
+            alert(
+                "¡Examen guardado correctamente!"
+            );
 
-
-alert("¡Examen guardado correctamente!");
-
-
-console.log(
-    "Configuración completa:",
-    configuracionExamen
-);
         }
 
     </script>
