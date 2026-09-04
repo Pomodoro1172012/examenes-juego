@@ -1,29 +1,54 @@
 // ========================================
-// PREGUNTAS
+// CONFIGURACIÓN DEL EXAMEN
 // ========================================
 
-const preguntas = [
+// Intentamos obtener el examen creado por la profesora
+const datosGuardados =
+    localStorage.getItem("configuracionExamen");
+
+let configuracionExamen = null;
+
+if (datosGuardados !== null) {
+
+    configuracionExamen =
+        JSON.parse(datosGuardados);
+
+}
+
+
+// ========================================
+// PREGUNTAS DE PRUEBA
+// ========================================
+
+const preguntasPrueba = [
+
     {
         pregunta: "¿Cuál es la capital de Argentina?",
+
         opciones: [
             "Córdoba",
             "Buenos Aires",
             "Rosario",
             "Mendoza"
         ],
+
         correcta: 1
     },
 
+
     {
         pregunta: "¿Cuánto es 2 + 2?",
+
         opciones: [
             "3",
             "4",
             "5",
             "6"
         ],
+
         correcta: 1
     }
+
 ];
 
 
@@ -32,116 +57,315 @@ const preguntas = [
 // ========================================
 
 let preguntaActual = 0;
+
 let aciertos = 0;
+
 let horaInicio = null;
 
-
 let preguntasExamen = [];
+
+
+// ========================================
+// CARGAR MATERIA
+// ========================================
+
+window.addEventListener("DOMContentLoaded", function () {
+
+    if (configuracionExamen !== null) {
+
+        document.getElementById("nombreMateria").textContent =
+            configuracionExamen.materia;
+
+    }
+
+});
+
+
 // ========================================
 // COMENZAR EXAMEN
 // ========================================
 
 function comenzarExamen() {
 
-    const nombre = document.getElementById("nombre").value.trim();
-    const curso = document.getElementById("curso").value.trim();
+    const nombre =
+        document
+            .getElementById("nombre")
+            .value
+            .trim();
+
+
+    const curso =
+        document
+            .getElementById("curso")
+            .value
+            .trim();
+
 
     if (nombre === "" || curso === "") {
-        alert("Completá tu nombre y tu curso.");
+
+        alert(
+            "Completá tu nombre y tu curso."
+        );
+
         return;
     }
 
+
     // Guardamos la hora exacta de inicio
+
     horaInicio = new Date();
 
+
     // Reiniciamos los datos
+
     preguntaActual = 0;
+
     aciertos = 0;
 
-   // Copiamos todas las preguntas
-preguntasExamen = [...preguntas];
 
-// Mezclamos las preguntas
-for (let i = preguntasExamen.length - 1; i > 0; i--) {
+    // ========================================
+    // ELEGIR LAS PREGUNTAS
+    // ========================================
 
-    const j = Math.floor(Math.random() * (i + 1));
+    if (
+        configuracionExamen !== null &&
+        configuracionExamen.preguntas &&
+        configuracionExamen.preguntas.length > 0
+    ) {
 
-    const temporal = preguntasExamen[i];
+        // Usamos las preguntas creadas por la profesora
 
-    preguntasExamen[i] = preguntasExamen[j];
+        preguntasExamen =
+            [...configuracionExamen.preguntas];
 
-    preguntasExamen[j] = temporal;
-}
+    } else {
 
-// Nos quedamos solamente con la cantidad elegida
-preguntasExamen = preguntasExamen.slice(0, configuracion.cantidadPreguntas);
-    console.log("Alumno:", nombre);
-    console.log("Curso:", curso);
-    console.log("Hora de inicio:", horaInicio);
+        // Si no hay configuración,
+        // usamos las preguntas de prueba
 
-    // Ocultamos inicio
-    document.getElementById("pantallaInicio").style.display = "none";
+        preguntasExamen =
+            [...preguntasPrueba];
 
-    // Mostramos examen
-    document.getElementById("pantallaExamen").style.display = "block";
+    }
+
+
+    // ========================================
+    // MEZCLAR PREGUNTAS
+    // ========================================
+
+    for (
+        let i = preguntasExamen.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+
+        const temporal =
+            preguntasExamen[i];
+
+
+        preguntasExamen[i] =
+            preguntasExamen[j];
+
+
+        preguntasExamen[j] =
+            temporal;
+
+    }
+
+
+    // ========================================
+    // CANTIDAD DE PREGUNTAS
+    // ========================================
+
+    let cantidad;
+
+
+    if (configuracionExamen !== null) {
+
+        cantidad =
+            configuracionExamen.cantidadPreguntas;
+
+    } else {
+
+        cantidad =
+            preguntasExamen.length;
+
+    }
+
+
+    preguntasExamen =
+        preguntasExamen.slice(
+            0,
+            cantidad
+        );
+
+
+    console.log(
+        "Alumno:",
+        nombre
+    );
+
+
+    console.log(
+        "Curso:",
+        curso
+    );
+
+
+    console.log(
+        "Hora de inicio:",
+        horaInicio
+    );
+
+
+    console.log(
+        "Preguntas del examen:",
+        preguntasExamen
+    );
+
+
+    // ========================================
+    // MOSTRAR EXAMEN
+    // ========================================
+
+    document
+        .getElementById("pantallaInicio")
+        .style.display = "none";
+
+
+    document
+        .getElementById("pantallaExamen")
+        .style.display = "block";
+
 
     mostrarPregunta();
+
 }
 
 
 // ========================================
 // MOSTRAR PREGUNTA
 // ========================================
+
 function mostrarPregunta() {
 
-    const pregunta = preguntasExamen[preguntaActual];
+    const pregunta =
+        preguntasExamen[preguntaActual];
 
-    document.getElementById("numeroPregunta").textContent =
-        "Pregunta " + (preguntaActual + 1);
 
-    document.getElementById("textoPregunta").textContent =
-        pregunta.pregunta;
+    document
+        .getElementById("numeroPregunta")
+        .textContent =
+            "Pregunta " +
+            (preguntaActual + 1);
 
-    const contenedor = document.getElementById("opciones");
+
+    document
+        .getElementById("textoPregunta")
+        .textContent =
+            pregunta.pregunta;
+
+
+    const contenedor =
+        document.getElementById("opciones");
+
 
     contenedor.innerHTML = "";
 
-    // Creamos una copia de las opciones
-    const opcionesMezcladas = pregunta.opciones.map((texto, indice) => {
-        return {
-            texto: texto,
-            indiceOriginal: indice
-        };
-    });
 
+    // ========================================
     // MEZCLAR OPCIONES
-    for (let i = opcionesMezcladas.length - 1; i > 0; i--) {
+    // ========================================
 
-        const j = Math.floor(Math.random() * (i + 1));
+    const opcionesMezcladas =
+        pregunta.opciones.map(
+            (texto, indice) => {
 
-        const temporal = opcionesMezcladas[i];
+                return {
 
-        opcionesMezcladas[i] = opcionesMezcladas[j];
+                    texto: texto,
 
-        opcionesMezcladas[j] = temporal;
+                    indiceOriginal: indice
+
+                };
+
+            }
+        );
+
+
+    for (
+        let i = opcionesMezcladas.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+
+        const temporal =
+            opcionesMezcladas[i];
+
+
+        opcionesMezcladas[i] =
+            opcionesMezcladas[j];
+
+
+        opcionesMezcladas[j] =
+            temporal;
+
     }
 
-    // Crear botones
-    opcionesMezcladas.forEach(opcion => {
 
-        const boton = document.createElement("button");
+    // ========================================
+    // CREAR BOTONES
+    // ========================================
 
-        boton.textContent = opcion.texto;
+    opcionesMezcladas.forEach(
+        opcion => {
 
-        boton.onclick = function () {
-            responder(opcion.indiceOriginal);
-        };
+            const boton =
+                document.createElement(
+                    "button"
+                );
 
-        contenedor.appendChild(boton);
-    });
 
-    document.getElementById("resultado").textContent = "";
+            boton.textContent =
+                opcion.texto;
+
+
+            boton.onclick =
+                function () {
+
+                    responder(
+                        opcion.indiceOriginal
+                    );
+
+                };
+
+
+            contenedor.appendChild(
+                boton
+            );
+
+        }
+    );
+
+
+    document
+        .getElementById("resultado")
+        .textContent = "";
+
 }
+
 
 // ========================================
 // RESPONDER
@@ -149,45 +373,78 @@ function mostrarPregunta() {
 
 function responder(indiceElegido) {
 
-    const pregunta = preguntasExamen[preguntaActual];
+    const pregunta =
+        preguntasExamen[preguntaActual];
 
-    const resultado = document.getElementById("resultado");
 
-    if (indiceElegido === pregunta.correcta) {
+    const resultado =
+        document.getElementById("resultado");
+
+
+    if (
+        indiceElegido ===
+        pregunta.correcta
+    ) {
 
         aciertos++;
 
-        resultado.textContent = "✅ ¡Correcto!";
+
+        resultado.textContent =
+            "✅ ¡Correcto!";
 
     } else {
 
         resultado.textContent =
             "❌ Incorrecto. La respuesta correcta es: " +
-            pregunta.opciones[pregunta.correcta];
+            pregunta.opciones[
+                pregunta.correcta
+            ];
+
     }
 
+
     // Desactivamos los botones
-    const botones = document.querySelectorAll("#opciones button");
 
-    botones.forEach(boton => {
-        boton.disabled = true;
-    });
+    const botones =
+        document.querySelectorAll(
+            "#opciones button"
+        );
 
-    // Pasamos a la siguiente pregunta
-    setTimeout(() => {
 
-        preguntaActual++;
+    botones.forEach(
+        boton => {
 
-        if (preguntaActual < preguntasExamen.length) {
+            boton.disabled = true;
 
-            mostrarPregunta();
-
-        } else {
-
-            terminarExamen();
         }
+    );
 
-    }, 1500);
+
+    // Siguiente pregunta
+
+    setTimeout(
+        () => {
+
+            preguntaActual++;
+
+
+            if (
+                preguntaActual <
+                preguntasExamen.length
+            ) {
+
+                mostrarPregunta();
+
+            } else {
+
+                terminarExamen();
+
+            }
+
+        },
+        1500
+    );
+
 }
 
 
@@ -197,25 +454,45 @@ function responder(indiceElegido) {
 
 function terminarExamen() {
 
-    const total = preguntasExamen.length;
+    const total =
+        preguntasExamen.length;
 
-    document.getElementById("numeroPregunta").textContent =
-        "Examen terminado";
 
-    document.getElementById("textoPregunta").textContent =
-        "¡Terminaste!";
+    document
+        .getElementById("numeroPregunta")
+        .textContent =
+            "Examen terminado";
 
-    document.getElementById("opciones").innerHTML = "";
 
-    document.getElementById("resultado").textContent =
-        "Aciertos: " + aciertos + " de " + total;
+    document
+        .getElementById("textoPregunta")
+        .textContent =
+            "¡Terminaste!";
 
-    console.log("Aciertos:", aciertos);
-    console.log("Hora de inicio:", horaInicio);
+
+    document
+        .getElementById("opciones")
+        .innerHTML = "";
+
+
+    document
+        .getElementById("resultado")
+        .textContent =
+            "Aciertos: " +
+            aciertos +
+            " de " +
+            total;
+
+
+    console.log(
+        "Aciertos:",
+        aciertos
+    );
+
+
+    console.log(
+        "Hora de inicio:",
+        horaInicio
+    );
+
 }
-window.addEventListener("DOMContentLoaded", function () {
-
-    document.getElementById("nombreMateria").textContent =
-        configuracion.materia;
-
-});
