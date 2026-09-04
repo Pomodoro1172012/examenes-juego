@@ -219,7 +219,42 @@ function mostrarPregunta() {
     const preguntas =
         configuracionExamen.preguntas;
 
+// ========================================
+// MEZCLAR LAS OPCIONES
+// ========================================
 
+const opcionesMezcladas =
+    pregunta.opciones.map(
+        (texto, indice) => ({
+            texto: texto,
+            indiceOriginal: indice
+        })
+    );
+
+
+// Mezclar aleatoriamente
+for (
+    let i = opcionesMezcladas.length - 1;
+    i > 0;
+    i--
+) {
+
+    const j =
+        Math.floor(
+            Math.random() * (i + 1)
+        );
+
+
+    [
+        opcionesMezcladas[i],
+        opcionesMezcladas[j]
+    ] =
+    [
+        opcionesMezcladas[j],
+        opcionesMezcladas[i]
+    ];
+
+}
     // ¿Terminamos?
 
     if (
@@ -276,8 +311,8 @@ function mostrarPregunta() {
 
     // Crear botones
 
-    pregunta.opciones.forEach(
-        (opcion, indice) => {
+  opcionesMezcladas.forEach(
+    (opcion) => {
 
             const boton =
                 document.createElement(
@@ -285,8 +320,8 @@ function mostrarPregunta() {
                 );
 
 
-            boton.textContent =
-                opcion;
+           boton.textContent =
+    opcion.texto;
 
 
             boton.type =
@@ -300,10 +335,9 @@ function mostrarPregunta() {
             boton.onclick =
                 function () {
 
-                    comprobarRespuesta(
-                        indice
-                    );
-
+                 comprobarRespuesta(
+    opcion.indiceOriginal
+);
                 };
 
 
