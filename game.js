@@ -47,7 +47,6 @@ async function cargarExamen() {
         return;
     }
 
-
     try {
 
         const respuesta =
@@ -57,16 +56,13 @@ async function cargarExamen() {
                 encodeURIComponent(idExamen)
             );
 
-
         const datos =
             await respuesta.json();
-
 
         console.log(
             "Examen recibido:",
             datos
         );
-
 
         if (!datos.ok) {
 
@@ -77,24 +73,18 @@ async function cargarExamen() {
             return;
         }
 
-
         configuracionExamen =
             datos.examen;
-
 
         console.log(
             "Configuración cargada:",
             configuracionExamen
         );
 
-
-        // Mostrar materia en la pantalla inicial
-
         const nombreMateria =
             document.getElementById(
                 "nombreMateria"
             );
-
 
         if (nombreMateria) {
 
@@ -103,14 +93,12 @@ async function cargarExamen() {
 
         }
 
-
     } catch (error) {
 
         console.error(
             "Error cargando examen:",
             error
         );
-
 
         alert(
             "No se pudo cargar el examen."
@@ -127,8 +115,6 @@ async function cargarExamen() {
 
 function comenzarExamen() {
 
-    // Comprobar que el examen haya cargado
-
     if (!configuracionExamen) {
 
         alert(
@@ -138,15 +124,11 @@ function comenzarExamen() {
         return;
     }
 
-
-    // Comprobar nombre
-
     const nombre =
         document
             .getElementById("nombre")
             .value
             .trim();
-
 
     if (nombre === "") {
 
@@ -157,15 +139,11 @@ function comenzarExamen() {
         return;
     }
 
-
-    // Comprobar curso
-
     const curso =
         document
             .getElementById("curso")
             .value
             .trim();
-
 
     if (curso === "") {
 
@@ -176,34 +154,19 @@ function comenzarExamen() {
         return;
     }
 
-
-    // Marcar que comenzó
-
     examenComenzado = true;
-
-
-    // Empezamos desde la primera pregunta
 
     preguntaActual = 0;
 
     respuestasCorrectas = 0;
 
-
-    // Ocultar pantalla inicial
-
     document.getElementById(
         "pantallaInicio"
     ).style.display = "none";
 
-
-    // Mostrar pantalla del examen
-
     document.getElementById(
         "pantallaExamen"
     ).style.display = "block";
-
-
-    // Mostrar primera pregunta
 
     mostrarPregunta();
 
@@ -219,42 +182,7 @@ function mostrarPregunta() {
     const preguntas =
         configuracionExamen.preguntas;
 
-// ========================================
-// MEZCLAR LAS OPCIONES
-// ========================================
 
-const opcionesMezcladas =
-    pregunta.opciones.map(
-        (texto, indice) => ({
-            texto: texto,
-            indiceOriginal: indice
-        })
-    );
-
-
-// Mezclar aleatoriamente
-for (
-    let i = opcionesMezcladas.length - 1;
-    i > 0;
-    i--
-) {
-
-    const j =
-        Math.floor(
-            Math.random() * (i + 1)
-        );
-
-
-    [
-        opcionesMezcladas[i],
-        opcionesMezcladas[j]
-    ] =
-    [
-        opcionesMezcladas[j],
-        opcionesMezcladas[i]
-    ];
-
-}
     // ¿Terminamos?
 
     if (
@@ -268,11 +196,53 @@ for (
     }
 
 
+    // Obtener pregunta actual
+
     const pregunta =
         preguntas[preguntaActual];
 
 
-    // Número de pregunta
+    // ========================================
+    // MEZCLAR LAS OPCIONES
+    // ========================================
+
+    const opcionesMezcladas =
+        pregunta.opciones.map(
+            (texto, indice) => ({
+                texto: texto,
+                indiceOriginal: indice
+            })
+        );
+
+
+    // Mezclar aleatoriamente
+
+    for (
+        let i = opcionesMezcladas.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() * (i + 1)
+            );
+
+        [
+            opcionesMezcladas[i],
+            opcionesMezcladas[j]
+        ] =
+        [
+            opcionesMezcladas[j],
+            opcionesMezcladas[i]
+        ];
+
+    }
+
+
+    // ========================================
+    // NÚMERO DE PREGUNTA
+    // ========================================
 
     document.getElementById(
         "numeroPregunta"
@@ -283,7 +253,9 @@ for (
         preguntas.length;
 
 
-    // Texto
+    // ========================================
+    // TEXTO DE LA PREGUNTA
+    // ========================================
 
     document.getElementById(
         "textoPregunta"
@@ -291,13 +263,14 @@ for (
         pregunta.pregunta;
 
 
-    // Contenedor de opciones
+    // ========================================
+    // CONTENEDOR DE OPCIONES
+    // ========================================
 
     const opciones =
         document.getElementById(
             "opciones"
         );
-
 
     opciones.innerHTML = "";
 
@@ -309,37 +282,35 @@ for (
     ).textContent = "";
 
 
-    // Crear botones
+    // ========================================
+    // CREAR BOTONES
+    // ========================================
 
-  opcionesMezcladas.forEach(
-    (opcion) => {
+    opcionesMezcladas.forEach(
+        (opcion) => {
 
             const boton =
                 document.createElement(
                     "button"
                 );
 
-
-           boton.textContent =
-    opcion.texto;
-
+            boton.textContent =
+                opcion.texto;
 
             boton.type =
                 "button";
 
-
             boton.className =
                 "opcion";
-
 
             boton.onclick =
                 function () {
 
-                 comprobarRespuesta(
-    opcion.indiceOriginal
-);
-                };
+                    comprobarRespuesta(
+                        opcion.indiceOriginal
+                    );
 
+                };
 
             opciones.appendChild(
                 boton
@@ -394,7 +365,6 @@ function comprobarRespuesta(
 
         respuestasCorrectas++;
 
-
         resultado.textContent =
             "✅ ¡Correcto!";
 
@@ -409,8 +379,8 @@ function comprobarRespuesta(
     }
 
 
-    // Esperar un poquito antes
-    // de pasar a la siguiente
+    // Esperar antes de pasar
+    // a la siguiente pregunta
 
     setTimeout(
         function () {
@@ -436,7 +406,6 @@ function terminarExamen() {
         document.getElementById(
             "pantallaExamen"
         );
-
 
     pantalla.innerHTML = `
 
